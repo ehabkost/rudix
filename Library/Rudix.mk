@@ -4,7 +4,7 @@
 # Authors: Rudá Moura, Leonardo Santagada
 #
 
-BuildSystem = 20120602
+BuildSystem = 20120819
 
 Vendor = org.rudix
 UncompressedName = $(Name)-$(Version)
@@ -135,7 +135,7 @@ pkgclean:
 	rm -rf pkg *.pkg final *.pmdoc
 
 clean: installclean
-	rm -rf prep build test check $(SourceDir) *~
+	rm -rf checksum prep build test check $(SourceDir) *~
 
 distclean: clean pkgclean
 	rm -f config.cache*
@@ -156,12 +156,12 @@ upload: pkg final
 	@$(call info_color,Sending $(PkgFile))
 	../../Library/googlecode_upload.py -p $(RUDIX) -s "$(Title)" -d Description -l $(RUDIX_LABELS) $(PkgFile)
 	@echo "$(Title): $(DistName)-$(Version)-$(Revision) http://code.google.com/p/rudix/wiki/$(DistName)"
+	@echo git tag $(DistName)-$(Version)-$(Revision)
 
 # FIXME: Temporary hack to build static packages.
 static: buildclean installclean
 	make pkg \
-		ONLY_STATIC_LIBS=1 \
-		RUDIX_APPLY_RECOMMENDATIONS=no \
+		RUDIX_BUILD_STATIC_LIBS=yes \
 		DistName=static-$(Name)
 	@touch $@
 
@@ -204,6 +204,13 @@ define fetch
 curl -f -O -C - -L
 endef
 
+define verify_checksum
+if test "$(Checksum)" != "" ; then \
+	echo "$(Checksum)  $(Source)" > checksum ; \
+	shasum --warn --check checksum ; \
+fi
+endef
+
 define explode
 case `file -b --mime-type $(Source)` in \
 	application/x-tar) tar xf $(Source) ;; \
@@ -243,13 +250,11 @@ $(if $(wildcard $(PortDir)/scripts),--scripts $(PortDir)/scripts) \
 	--out $(PortDir)/$(PkgFile)
 endef
 
-ifeq ($(RUDIX_APPLY_RECOMMENDATIONS),yes)
 define apply_recommendations
 rm -f $(Name).pmdoc/*-contents.xml
 open $(Name).pmdoc
 ../../Library/apply_recommendations.sh $(Name).pmdoc
 endef
-endif
 
 define sanitize_pmdoc
 for x in $(Name).pmdoc/*-contents.xml ; do \
@@ -347,6 +352,7 @@ $(fetch) $(URL)/$(Source)
 endef
 
 define prep_inner_hook
+$(verify_checksum)
 $(explode)
 mv -v $(UncompressedName) $(SourceDir)
 $(apply_patches)
