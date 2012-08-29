@@ -1,4 +1,7 @@
-include ../../Library/GNU.mk
+include ../../Library/Config.mk
+RUDIX_UNIVERSAL=
+include ../../Library/Rudix.mk
+include ../../Library/GNUFormula.mk
 
 Title=		Ragel
 Name=		ragel
