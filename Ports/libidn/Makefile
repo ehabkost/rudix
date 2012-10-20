@@ -10,6 +10,7 @@ Source=		$(Name)-$(Version).tar.gz
 ReadMeFile=	$(SourceDir)/README
 LicenseFile=	$(SourceDir)/COPYING
 
-ifdef ONLY_STATIC_LIBS
-GnuConfigureExtra += --enable-static --disable-shared
-endif
+define test_inner_hook
+$(BinDir)/idn --version
+endef
+

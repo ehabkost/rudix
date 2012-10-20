@@ -12,12 +12,6 @@ Source=		$(Name)-$(Version).tar.gz
 ReadMeFile=	$(SourceDir)/NOTES
 LicenseFile=	LICENSE
 
-LdFlags += -lresolv
-
-ifeq ($(RUDIX_BUILD_WITH_STATIC_LIBS),yes)
-EnvExtra += LIBS="/usr/local/lib/libevent.a"
-endif
-
-define final_inner_hook
-/usr/local/bin/tmux -c true
+define test_inner_hook
+$(BinDir)/tmux -V
 endef

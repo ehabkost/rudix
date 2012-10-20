@@ -1,15 +1,19 @@
 include ../../Library/GNU.mk
 
-Title=		dovecot
-Name=		dovecot
-Version=	2.1.7
+Title=		Ragel
+Name=		ragel
+Version=	6.7
 Revision=	0
-URL=		http://dovecot.org/releases/2.1/
+URL=		http://www.complang.org/ragel/
 Source=		$(Name)-$(Version).tar.gz
 
 ReadMeFile=	$(SourceDir)/README
 LicenseFile=	$(SourceDir)/COPYING
 
 define test_inner_hook
-sudo $(SBinDir)/dovecot -c tests/dovecot.conf
+cd $(BuildDir)/test ; ./runtests
+endef
+
+define test_inner_hook
+$(BinDir)/ragel --version
 endef
