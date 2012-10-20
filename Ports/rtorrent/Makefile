@@ -15,8 +15,9 @@ EnvExtra += PKG_CONFIG_PATH="/usr/lib/pkgconfig"
 ReadMeFile=	$(SourceDir)/README
 LicenseFile=	$(SourceDir)/COPYING
 
+
 CFlags += -fvisibility=hidden
 
-define final_inner_hook
+define test_inner_hook
 $(BinDir)/rtorrent -h
 endef

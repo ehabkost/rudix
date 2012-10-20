@@ -22,7 +22,7 @@ ConfigureExtra += --enable-shared
 # http://code.google.com/p/rudix-snowleopard/issues/detail?id=1
 ConfigureExtra += --disable-mmx
 
-define final_inner_hook
+define test_inner_hook
 $(BinDir)/ffmpeg -version
 endef
 
