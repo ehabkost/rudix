@@ -1,12 +1,12 @@
-BuildRequires += $(LibDir)/libintl.la
-BuildRequires += $(LibDir)/libidn.la
+BuildRequires += $(LibDir)/libintl.la # static-gettext
+BuildRequires += $(LibDir)/libidn.la # static-libidn
 
 include ../../Library/GNU.mk
 
 Title=		GNU Wget
 Name=		wget
-Version=	1.13.4
-Revision=	3
+Version=	1.14
+Revision=	0
 URL=		http://ftp.gnu.org/gnu/wget/
 Source=		$(Name)-$(Version).tar.gz
 
@@ -24,6 +24,7 @@ define test_inner_hook
 $(BinDir)/wget --version
 endef
 
+# Due static-gettext
 ifeq ($(RUDIX_BUILD_WITH_STATIC_LIBS),yes)
 LdFlags += -framework CoreFoundation -liconv
 endif

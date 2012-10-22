@@ -138,14 +138,13 @@ upload: pkg test
 	@$(call info_color,Sending $(PkgFile))
 	../../Library/googlecode_upload.py -p $(RUDIX) -s "$(Title)" -d Description -l $(RUDIX_LABELS) $(PkgFile)
 	@echo "$(Title): $(DistName)-$(Version)-$(Revision) http://code.google.com/p/rudix/wiki/$(DistName)"
-	hg tag -f $(DistName)-$(Version)-$(Revision)
+	@echo git tag $(DistName)-$(Version)-$(Revision)
 
 
 # FIXME: Temporary hack to build static packages.
 static: buildclean installclean
 	make pkg \
-		ONLY_STATIC_LIBS=1 \
-		RUDIX_APPLY_RECOMMENDATIONS=no \
+		RUDIX_BUILD_STATIC_LIBS=yes \
 		DistName=static-$(Name)
 	@touch $@
 
@@ -184,6 +183,13 @@ endef
 
 define fetch
 curl -f -O -C - -L
+endef
+
+define verify_checksum
+if test "$(Checksum)" != "" ; then \
+	echo "$(Checksum)  $(Source)" > checksum ; \
+	shasum --warn --check checksum ; \
+fi
 endef
 
 define explode
@@ -225,13 +231,11 @@ $(if $(wildcard $(PortDir)/scripts),--scripts $(PortDir)/scripts) \
 	--out $(PortDir)/$(PkgFile)
 endef
 
-ifeq ($(RUDIX_APPLY_RECOMMENDATIONS),yes)
 define apply_recommendations
 rm -f $(Name).pmdoc/*-contents.xml
 open $(Name).pmdoc
 ../../Library/apply_recommendations.sh $(Name).pmdoc
 endef
-endif
 
 define sanitize_pmdoc
 for x in $(Name).pmdoc/*-contents.xml ; do \
@@ -329,6 +333,7 @@ $(fetch) $(URL)/$(Source)
 endef
 
 define prep_inner_hook
+$(verify_checksum)
 $(explode)
 mv -v $(UncompressedName) $(SourceDir)
 $(apply_patches)
