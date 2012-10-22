@@ -15,10 +15,7 @@ LicenseFile=	$(SourceDir)/COPYING
 UncompressedName = lynx2-8-7
 
 ifeq ($(RUDIX_BUILD_WITH_STATIC_LIBS),yes)
-LdFlags += /usr/local/lib/libintl.a -liconv -framework CoreFoundation
-define prep_post_hook
-#perl -p -i -e s/'intl '//g $(SourceDir)/configure
-endef
+LdFlags += -liconv -framework CoreFoundation
 endif
 
 GnuConfigureExtra += --enable-ipv6

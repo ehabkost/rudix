@@ -15,7 +15,3 @@ LicenseFile=	$(SourceDir)/COPYING
 
 #GnuConfigureExtra += --enable-fat=yes
 GnuConfigureExtra += --enable-cxx
-
-ifdef ONLY_STATIC_LIBS
-GnuConfigureExtra += --enable-static --disable-shared
-endif

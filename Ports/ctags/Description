@@ -6,4 +6,3 @@ Multilanguage implementation of ctags.
 Release Notes:
   * Fixed (null) errors
   * Restored symlinks to exuberant-ctags and exuberant-etags
-
