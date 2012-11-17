@@ -3,6 +3,7 @@
 BuildRequires += $(LibDir)/libintl.la # static-gettext
 
 include ../../Library/Config.mk
+RUDIX_UNIVERSAL=no
 RUDIX_PARALLEL_EXECUTION=no
 include ../../Library/Rudix.mk
 include ../../Library/ConfigureFormula.mk
