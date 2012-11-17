@@ -24,9 +24,9 @@ define install_post_hook
 # FIXME: remove Git Gui.app
 rm -rf $(InstallDir)$(Prefix)/share/git-gui/lib/Git\ Gui.app
 # Fix Perl module position
-install -d $(InstallDir)/Library/Perl/Updates/5.12.4
+install -d $(InstallDir)/Library/Perl/Updates/5.12.3
 mv $(InstallDir)$(LibDir)/perl5/site_perl/*.pm \
-	$(InstallDir)/Library/Perl/Updates/5.12.4
+	$(InstallDir)/Library/Perl/Updates/5.12.3
 # Fix Python module position
 install -d $(InstallDir)/Library/Python/2.7
 mv $(InstallDir)$(LibDir)/python2.7/site-packages \
