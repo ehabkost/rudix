@@ -1,4 +1,7 @@
-include ../../Library/Unix.mk
+include ../../Library/Config.mk
+RUDIX_UNIVERSAL=no
+include ../../Library/Rudix.mk
+include ../../Library/UnixFormula.mk
 
 Title=		LuaJIT
 Name=		luajit
